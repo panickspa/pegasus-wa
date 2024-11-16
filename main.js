@@ -26,32 +26,20 @@ client.on("authenticated", (e) => {
 })
 // client.on("")
 function generateQR(_qr){
-    // console.log("generate qr", _qr)
-    // let qr_  = qr.imageSync(qr, { type: 'png'});
-    // console.log(qr_)
-    // // writeFileSync('qr.png', qr_);
-    // console.log(_qr)
-    // writeFileSync('./login_text.txt', _qr, {
-    //     encoding: 'utf-8'
-    // })
-    // writeFileSync('./qr.png', qr_);
     QRCode.toFile('./qr.png', _qr)
     qrcode.generate(_qr, {small: true});
 }
 
 client.on('qr', _qr => {
-    // qrcode.generate(_qr, {small: true});
     QRCode.toFile('./qr.png', _qr)
     qrcode.generate(_qr, {small: true});
 });
 client.on('message_create', message => {
-	// console.log(message.body);
     if(!message.fromMe){
         doubleChain({
             pertanyaan: message.body,
         },3,db)
             .then(e => {
-                // message.reply(JSON.stringify(e))
                 console.log(e)
                 if(typeof e == 'string'){
                     client.getChatById(message.from).then((chat) => {

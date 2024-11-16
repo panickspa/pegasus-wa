@@ -12,6 +12,7 @@ import {apiKey} from './api.js';
 import { black, grad5 } from './color.js';
 import sqlite3 from 'sqlite3'
 import { config } from 'dotenv'
+import { appendFileSync } from 'fs';
 config()
 
 // import {removeStopwords, ind} from 'stopword'
@@ -175,6 +176,10 @@ export const getAllDomain = () => fetch('https://webapi.bps.go.id/v1/api/domain/
 
 export async function doubleChain(p, attempt = 7, db) {
     console.log('chaining ...')
+    appendFileSync('log.jsonl', `\n${JSON.stringify({
+      message: 'chaining....',
+      pertanyaan: p.pertanyaan,
+    })}`);
     // let a = 0;
     // console.log('db read write');
     try {
@@ -202,6 +207,10 @@ export async function doubleChain(p, attempt = 7, db) {
       }
       if (exclusion.findIndex(e => p.pertanyaan.includes(e)) > -1) {
         let g = await genText(p.pertanyaan);
+        appendFileSync('log.jsonl', `\n${JSON.stringify({
+          message: g,
+          pertanyaan: p.pertanyaan,
+        })}`);
         return g;
       }
       const prompt = `Berdasarkan schema tabel dibawah, tulis sebuah SQL query SQLite 3 dengan berdasarkan dibawah berikut: 
@@ -238,13 +247,17 @@ export async function doubleChain(p, attempt = 7, db) {
           contents: [{role: 'user', parts: parts}],
         });
         let q_text = q.response.text();
-        console.log(q_text);
+        // console.log(q_text);
         let q_json = JSON.parse(q_text);
+        appendFileSync('log.jsonl', `\n${JSON.stringify({
+          message: q_json,
+          pertanyaan: p.pertanyaan
+        })}`);
         // eslint-disable-next-line no-useless-escape
         let data = await getData(q_json.sql_publikasi.replaceAll(/NEAR\(\'/g,'NEAR(').replaceAll(/\'\)\'/g,")'"), db);
         // eslint-disable-next-line no-useless-escape
         let data2 = await getData(q_json.sql_variable.replaceAll(/NEAR\(\'/g,'NEAR(').replaceAll(/\'\)\'/g,")'"), db);
-        console.log(data2.length > 0 || data.length > 0);
+        // console.log(data2.length > 0 || data.length > 0);
         if(data2.length > 0 || data.length > 0){
           a = attempt;
           let publikasi_ = data;
@@ -256,16 +269,26 @@ export async function doubleChain(p, attempt = 7, db) {
             };
           })
           .sort((a, b) => {return Number(b.count) - Number(a.count);});
+          appendFileSync('log.jsonl', `\n${JSON.stringify({
+            message: 'Data ditemukan',
+            pertanyaan: p.pertanyaan,
+            data: titles,
+          })}`);
           return [titles, data2];
         }
       }
       let g = await genText(p.pertanyaan);
+      appendFileSync('log.jsonl', `\n${JSON.stringify({
+        message: g,
+        pertanyaan: p.pertanyaan,
+      })}`);
       return g;
     } catch (error) {
       let g = {
         error: error,
         message: 'Maaf layanan kami sedang mengalami gangguan silahkan coba tanyakan kembali kepada saya beberapa saat lagi'
       }
+      appendFileSync('log.jsonl', `\n${JSON.stringify(g)}`);
       return g;
     }
   }
