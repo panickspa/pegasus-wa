@@ -1,3 +1,7 @@
+# OSX
+#
+
+.DS_Store
 .wwebjs_cache
 node_modules
 npm-debug.log
