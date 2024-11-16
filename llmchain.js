@@ -62,11 +62,11 @@ const getParts = (q) => {
 };
 // Model LLM
 const model = genAI.getGenerativeModel({
-  model: 'gemini-1.5-pro',
+  model: 'gemini-1.5-flash-002',
 });
 
 const model2 = genAI.getGenerativeModel({
-  model: 'gemini-1.5-pro',
+  model: 'gemini-1.5-flash-002',
   generationConfig:{
     responseMimeType: 'application/json',
     responseSchema:{
