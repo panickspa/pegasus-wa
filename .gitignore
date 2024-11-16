@@ -1,0 +1,9 @@
+.wwebjs_cache
+node_modules
+npm-debug.log
+yarn.lock
+package-lock.json
+data-*.db
+*.db
+qr.png
+.env
