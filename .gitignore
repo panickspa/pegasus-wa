@@ -7,3 +7,5 @@ data-*.db
 *.db
 qr.png
 .env
+# *.txt
+login-text.txt
