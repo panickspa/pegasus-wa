@@ -16,3 +16,5 @@ login_text.txt
 login_text.txt
 ./*.txt
 log.jsonl
+out
+out/*
