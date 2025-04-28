@@ -24,3 +24,5 @@ yarn install
 node main.js
 ```
 and then scan qr.png on your Whatsapp Account
+
+Full Documentation see Wikis
