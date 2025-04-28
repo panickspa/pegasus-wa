@@ -1,3 +1,5 @@
+import { config } from 'dotenv'
+config()
 const domain = [
   {
     "domain_id": "0000",
@@ -2748,7 +2750,7 @@ const domain = [
 export const publikasiToText = async (arrayOfPublikasi) => {
   const apiData = await Promise.all(
     arrayOfPublikasi.map(async (publikasi) => {
-      const data = await fetch(`https://webapi.bps.go.id/v1/api/list/model/publication/domain/7106/key/23b53e3e77445b3e54c11c60604350bf/keyword/${decodeURI(publikasi.title)}`)
+      const data = await fetch(`https://webapi.bps.go.id/v1/api/list/model/publication/domain/7106/key/${process.env.BPS_API_KEY}/keyword/${decodeURI(publikasi.title)}`)
       const json = await data.json()
       return {
         title: publikasi.title,
