@@ -144,8 +144,8 @@ const data = [
     ]
   ]
 async function run() {
-   const publikasi = await publikasiToText(data[0])
-   const varia = await variableToText(data[1])
-   console.log(`${publikasi}\n${varia}`)
+  //  const publikasi = await publikasiToText(data[0])
+  //  const varia = await variableToText(data[1])
+  //  console.log(`${publikasi}\n${varia}`)
 }
 run()
